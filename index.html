@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Musique YouTube en Direct</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #8e44ad, #c0392b);
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+        #musicInfo {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Musique en cours sur YouTube</h1>
+    <div id="musicInfo">Chargement...</div>
+
+    <script>
+        // Remplacez ceci par votre clé API YouTube
+        const apiKey = 'AIzaSyCjVQekvQcq43DycL303834uWO9BdJf7_A';
+        // ID de la chaîne YouTube ou d'autres critères pour trouver la vidéo en cours
+        const channelId = 'UCPI34aM7aPfkrsJKWqPIdxA'; // Exemple : ID de la chaîne Google Developers
+
+        async function fetchCurrentVideo() {
+            const response = await fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&channelId=${channelId}&part=snippet&order=date&maxResults=1`);
+            const data = await response.json();
+            if (data.items && data.items.length > 0) {
+                const video = data.items[0];
+                document.getElementById('musicInfo').innerText = `${video.snippet.title} par ${video.snippet.channelTitle}`;
+            } else {
+                document.getElementById('musicInfo').innerText = 'Aucune musique en cours';
+            }
+        }
+
+        fetchCurrentVideo();
+        // Actualiser toutes les minutes
+        setInterval(fetchCurrentVideo, 40000);
+    </script>
+</body>
+</html>
